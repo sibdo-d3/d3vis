@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Torus Mesh Visualisation</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+		<script type="text/javascript" src="d3vis.js"></script>
+		<style type="text/css">
+			body{
+				font-family:Verdana;
+				color:silver;
+				background:black;
+				margin:20px 100px;
+				text-align:center;
+
+			}
+			h1{
+				text-align:center;
+			}
+			p{
+				line-height: 2;
+				width:60%;
+				margin:20px auto;
+			}
+			.meshnet{
+				border:2px solid silver;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>Torus Mesh Visualisation</h1>
+		<script type="text/javascript">
+			// On page load, create and run a mesh visualisation
+			window.addEventListener('load', function(){
+
+				// Construct a torus mesh topology
+				var mesh = D3Vis.Mesh.Torus()
+						.rows(9)
+						.cols(15)
+						.value(5)
+						.nCats(3);
+
+				// Construct the mesh visualisation from the topology
+				var meshVis = D3Vis.Mesh()
+					.mesh(mesh)
+					.nodeNames([
+						"Forest",
+						"SunShine",
+						"Ember"])
+					.nodeCols([
+						{r:35, g:69, b:29}, // Greeny
+						{r:209, g:198, b:69}, // Bright yellow
+						{r:170, g:92, b:9}]) // Dark Orange
+					.heatCol({r:139, g:2, b:2})
+					.linkCol({r:207, g:134, b:44})
+					.nodeRadius(4)
+					.maxRadius(12)
+					.linkDist(40)
+					.forceCharge(-40)
+					.forceGravity(0.05);
+
+				// Construct grid background
+				var grid = D3Vis.BGGrid()
+					.ticks(8)
+					.color('#111');
+
+				// Construct the SVG container for the visualisation
+				var svg = d3.select("body").append("svg")
+					.attr("class", "meshnet")
+					.attr("width", 600)
+					.attr("height", 500);
+
+				// Draw grid onto the svg;
+				grid(svg);
+
+				// Compile and run the mesh visualisations
+				meshVis(svg);
+
+			}, false );
+		</script>
+	</body>
+</html>
