@@ -59,6 +59,7 @@ var D3Vis = (function(){
 			{r:170, g:92, b:9}]; // Dark Orange
 		var heatCol = {r:139, g:2, b:2};
 		var linkCol = {r:207, g:134, b:44};
+		var spheres = true; // Whether to shade the circles as spheres
 		var nodeRadius = 4; // The default node radius
 		var maxRadius = 12; // The maximum node radius
 		var linkOpacity = 0.6; // The link opacity
@@ -119,17 +120,23 @@ var D3Vis = (function(){
 				.data(graph.nodes)
 				.enter().append("g")
 				.attr("class", nodeClass);
-			// Use circles with radial gradients to give 3D effect
-			var grad1 = addGradient(node, "yellow1", "#FAB518"  , "#444422", nodeRadius)
-				.attr("id", function(d){ return "grad1_" + d.id; });
-			var gradStop1 = grad1.select('.stop1')
-				.attr('stop-color', function(d){ return magToCol(0, d.col, heatCol); });
-			var gradStop2 = grad1.select('.stop2');
 			var circle1 = node.append('circle')
 				.attr("r", nodeRadius)
 				.attr('cx', '0')
-				.attr('cy', '0')
-				.style("fill", function(d){ return 'url(#grad1_' + d.id + ')';} );
+				.attr('cy', '0');
+			// Use circles with radial gradients to give 3D effect
+			if(spheres){
+				var grad1 = addGradient(node, "yellow1", "#FAB518"  , "#444422", nodeRadius)
+					.attr("id", function(d){ return "grad1_" + d.id; });
+				var gradStop1 = grad1.select('.stop1')
+					.attr('stop-color', function(d){ return magToCol(0, d.col, heatCol); });
+				var gradStop2 = grad1.select('.stop2');
+				circle1
+					.style("fill", function(d){ return 'url(#grad1_' + d.id + ')';} );
+			}else{
+				circle1
+					.style("fill", function(d){ return colToStr(d.col); } )
+			}
 			// Shadow gradient
 			/*var g2 = node.append('g')
 				.attr('transform', 'translate(25,55) scale(1.0,0.5)');
@@ -201,12 +208,18 @@ var D3Vis = (function(){
 					return d2r(dist(x, y, d.x, d.y));
 				};
 				circle1.attr('r', rad);
-				//circle2.attr('r', rad);
-				grad1.attr('r', rad);
-				//grad2.attr('r', rad);
-				gradStop1.attr('stop-color', function(d){
-					return magToCol(d2v(dist(x, y, d.x, d.y)), d.col, heatCol);
-				});
+				if(spheres){
+					//circle2.attr('r', rad);
+					grad1.attr('r', rad);
+					//grad2.attr('r', rad);
+					gradStop1.attr('stop-color', function(d){
+						return magToCol(d2v(dist(x, y, d.x, d.y)), d.col, heatCol);
+					});
+				}else{
+					circle1.style('fill', function(d){
+						return magToCol(d2v(dist(x, y, d.x, d.y)), d.col, heatCol);
+					});
+				}
 				link.attr('stroke', function(d){
 					var lx = (d.source.x + d.target.x)/2;
 					var ly = (d.source.y + d.target.y)/2;
@@ -310,6 +323,7 @@ var D3Vis = (function(){
 		Mesh.nodeCols         = function(v){ if(!arguments.length) return nodeCols       ; nodeCols        = v; return Mesh; };
 		Mesh.heatCol          = function(v){ if(!arguments.length) return heatCol        ; heatCol         = v; return Mesh; };
 		Mesh.linkCol          = function(v){ if(!arguments.length) return linkCol        ; linkCol         = v; return Mesh; };
+		Mesh.spheres          = function(v){ if(!arguments.length) return spheres        ; spheres         = v; return Mesh; };
 		Mesh.nodeRadius       = function(v){ if(!arguments.length) return nodeRadius     ; nodeRadius      = v; return Mesh; };
 		Mesh.maxRadius        = function(v){ if(!arguments.length) return maxRadius      ; maxRadius       = v; return Mesh; };
 		Mesh.linkOpacity      = function(v){ if(!arguments.length) return linkOpacity    ; linkOpacity     = v; return Mesh; };
