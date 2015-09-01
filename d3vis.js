@@ -197,6 +197,7 @@ var D3Vis = (function(){
 			// Remove nodes on double-click
 			node.on('dblclick.removeNode', function(){
 				removeNode(d3.select(this));
+				force.resume();
 			});
 
 			// Apply 'heat' based on mouse proximity.
