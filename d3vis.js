@@ -4,7 +4,7 @@
  * Includes a pliable mesh visualisation in torus or lattice topologies.
  *
  *
- * Copyright (C) 2015  Conrad Rider  <cride5@crider.co.uk>
+ * Copyright (C) 2015  Sibdocity LTD  <wwww.sibdo.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Conrad Rider
  *
+ * @author Conrad Rider  <www.crider.co.uk>
  */
 
 
