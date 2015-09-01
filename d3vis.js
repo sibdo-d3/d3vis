@@ -84,8 +84,9 @@ var D3Vis = (function(){
 		var Mesh = function(svg){
 
 			// Pick up width/height from svg
-			var width = svg.attr('width');
-			var height = svg.attr('height');
+			var bBox = svg.node().getBoundingClientRect();
+			var width = bBox.width;
+			var height = bBox.height;
 
 			// Compile mesh topology to produce graph object
 			var graph = mesh();
@@ -547,8 +548,9 @@ var D3Vis = (function(){
 		// Compile grid from properties
 		var BGGrid = function(svg){
 			// Pick up width/height from svg
-			var width = svg.attr('width');
-			var height = svg.attr('height');
+			var bBox = svg.node().getBoundingClientRect();
+			var width = bBox.width;
+			var height = bBox.height;
 			// Add background grid lines
 			var xScale = d3.scale.linear()
 				.domain([0,1])
