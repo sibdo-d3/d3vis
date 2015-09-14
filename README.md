@@ -1,4 +1,4 @@
-### D3Vis
+### SibD3
 
 A series of visualisation components based on the d3 library.
 
